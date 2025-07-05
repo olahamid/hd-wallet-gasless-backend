@@ -1,0 +1,2 @@
+address=0xecd514994Dc2DA214CFf747885BE2e177f97172e
+mnemonic=sad swap rug repeat leg rose sausage kingdom best lens figure rate
