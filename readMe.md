@@ -28,4 +28,3 @@ ruto-gasless-service/
 **Contract Address** = 0x541EB03091F092f03369Ba1a3E819F3427428041
 **sapolia Link** = https://sepolia.etherscan.io/address/0x541eb03091f092f03369ba1a3e819f3427428041
 **Public Address:** 0xecd514994Dc2DA214CFf747885BE2e177f97172e
-**Private Key:** 0xacde8cb55f2f90375b6636fca3dedbe7c0de58dfc6295e2cb26df27385bf1c8b
