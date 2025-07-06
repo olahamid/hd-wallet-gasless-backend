@@ -1,19 +1,4 @@
-import { ethers } from "ethers";
-import { InfuraProvider } from "ethers";
-import { AlchemyProvider } from "ethers";
-
-import dotenv from "dotenv";
-dotenv.config();
-// set the provider based on the network
-const NETWORK = "sepolia";
-const ALCHEMY_API_KEY = process.env.ALCHEMY_API_KEY; // replace with your Alchemy API key
-
-// set HD-wallet path for sapolia eth
-const SAPOLIA_ETH_HD_WALLET_PATH = `m/44'/60'/0'/0/0`;
-export const PROVIDER = new AlchemyProvider(NETWORK, ALCHEMY_API_KEY);
-export const PATH = SAPOLIA_ETH_HD_WALLET_PATH;
-export const TOKEN_CONTRACT_ADDRESS = "0x541EB03091F092f03369Ba1a3E819F3427428041";
-export const ABI = [
+[
   {
     "type": "fallback",
     "stateMutability": "payable"
@@ -302,4 +287,4 @@ export const ABI = [
     ],
     "anonymous": false
   }
-        ];
+]

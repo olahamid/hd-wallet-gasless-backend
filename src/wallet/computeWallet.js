@@ -2,11 +2,11 @@ import { HDNodeWallet, Mnemonic, randomBytes } from "ethers";
 import { writeFileSync } from "fs";
 import * as fs from "fs";
 import dotenv from "dotenv";
-import config from "../config/config.wallet.js";
+import { PROVIDER, ABI, TOKEN_CONTRACT_ADDRESS, PATH } from "../config/config.wallet.js";
 
 dotenv.config();
 
-const { NETWORK, PROVIDER, PATH, TOKEN_CONTRACT_ADDRESS, ABI } = config;
+// const { NETWORK, PROVIDER, PATH, TOKEN_CONTRACT_ADDRESS, ABI } = config;
 function getPhrase( 
     useRandom, inputPhrase = ""
 ) {

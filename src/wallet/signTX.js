@@ -2,12 +2,12 @@
 
 import { ethers } from "ethers";
 import { loadWallet } from "./loadWallet.js";
-import config from "../config/config.wallet.js";
+import { PROVIDER, ABI, TOKEN_CONTRACT_ADDRESS, PATH } from "../config/config.wallet.js";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const { PROVIDER } = config;
+// const { PROVIDER } = config;
 
 const FILE_PATH = "./wallet.json";
 const PASSWORD = "ruto-password";
