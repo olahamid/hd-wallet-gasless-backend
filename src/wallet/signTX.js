@@ -1,5 +1,4 @@
-// src/wallet/signAndSendTx.js
-
+// File: src/wallet/signTX.js
 import { ethers } from "ethers";
 import { loadWallet } from "./loadWallet.js";
 import { PROVIDER, ABI, TOKEN_CONTRACT_ADDRESS, PATH } from "../config/config.wallet.js";

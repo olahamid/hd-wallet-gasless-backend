@@ -1,14 +1,15 @@
+// File: src/wallet/loadWallet.js
 import { readFileSync } from "fs";
 import * as fs from "fs";
 import { ethers, HDNodeWallet, Mnemonic } from "ethers";
 import { Wallet } from "ethers";
 
 import dotenv from "dotenv";
-import config from "../config/config.wallet.js";
+import { PROVIDER, ABI, TOKEN_CONTRACT_ADDRESS, PATH } from "../config/config.wallet.js";
 
 dotenv.config();
 
-const { NETWORK, PROVIDER, PATH, TOKEN_CONTRACT_ADDRESS, ABI } = config;
+// const { NETWORK, PROVIDER, PATH, TOKEN_CONTRACT_ADDRESS, ABI } = config;
 
 /**
  * Load an HD wallet from a JSON file.

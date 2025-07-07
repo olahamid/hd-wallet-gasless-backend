@@ -1,3 +1,4 @@
+// File: src/wallet/computeWallet.js
 import { HDNodeWallet, Mnemonic, randomBytes } from "ethers";
 import { writeFileSync } from "fs";
 import * as fs from "fs";
