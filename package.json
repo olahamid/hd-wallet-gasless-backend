@@ -3,7 +3,8 @@
     "cors": "^2.8.5",
     "dotenv": "^17.0.1",
     "ethers": "^6.15.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
   },
   "name": "ruto-gasless-service",
   "version": "1.0.0",
@@ -12,12 +13,21 @@
   "scripts": {
     "start": "node src/server/app.js",
     "dev": "nodemon src/server/app.js",
-    "test": "node src/services/testTokenService.js",
+    "testContract": "node src/test/testTokenService.js",
+    "test-load-wallet": "node src/test/testLoadWallet.js",
+    "test-gasless": "node src/test/gasless-test.js",
+    "generate-signature": "node src/server/generateSignature.js",
     "create-wallet": "node src/wallet/computeWallet.js",
-    "load-wallet": "node src/wallet/loadWallet.js"
+    "load-wallet": "node src/test/testLoadWallet.js",
+    "sign-Tx": "node src/wallet/signTX.js",
+    "get-public-address": "node src/wallet/getPublicAddress.js",
+    "get-private-key": "node src/wallet/getPrivateKey.js",
+    "deposit-eth": "node src/services/tokenService.js depositETH",
+    "transfer-tokens": "node src/services/tokenService.js transferTokens"
+   
   },
   "keywords": [],
-  "author": "",
+  "author": "Ola Hamid - https://github.com/olahamid",
   "license": "ISC",
   "description": "",
   "devDependencies": {
