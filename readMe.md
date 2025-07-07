@@ -141,19 +141,22 @@ http://localhost:3000/api
 ```http
 GET /wallet/info
 ```
+```curl -X GET http://localhost:3000/api/wallet/info | jq
+```
+
 
 **Response:**
 ```json
 {
   "success": true,
   "data": {
-    "address": "0x...",
+    "address": "0xecd514994Dc2DA214CFf747885BE2e177f97172e",
     "tokenInfo": {
       "name": "RUTO_AI USDT",
       "symbol": "RUTO_USDT",
-      "decimals": 6
+      "decimals": "6"
     },
-    "balance": "14999999528.995"
+    "balance": "14999999028.995"
   }
 }
 ```
@@ -178,13 +181,30 @@ Content-Type: application/json
 ```http
 POST /transfer/gasless
 Content-Type: application/json
+```
 
+```
 {
-  "userAddress": "0x...",
-  "to": "0x...",
-  "amount": "100",
-  "timestamp": 1751883182163,
-  "signature": "0x..."
+  "success": true,
+  "data": {
+    "transactionHash": "0x55c7432e611ac6384b61daa389d5abd4906a79dcb6635b19680e9ef492a37fa5",
+    "blockNumber": 8712742,
+    "gasUsed": "35352",
+    "gasPaidBy": "0xecd514994Dc2DA214CFf747885BE2e177f97172e",
+    "authorizedBy": "0x8fd379246834eac74B8419FfdA202CF8051F7A03",
+    "from": "0xecd514994Dc2DA214CFf747885BE2e177f97172e",
+    "to": "0x52102c90aFc51Eb171fa08bB56c892B46bD91177",
+    "amount": "100",
+    "userCreditBefore": 1000,
+    "userCreditAfter": 900,
+    "serviceBalance": "14999999028.995",
+    "isGasless": true,
+    "verificationDetails": {
+      "signatureValid": true,
+      "messageVerified": "Transfer 100 tokens from 0x8fd379246834eac74B8419FfdA202CF8051F7A03 to 0x52102c90aFc51Eb171fa08bB56c892B46bD91177 at 1751883182163",
+      "recoveredAddress": "0x8fd379246834eac74B8419FfdA202CF8051F7A03"
+    }
+  }
 }
 ```
 

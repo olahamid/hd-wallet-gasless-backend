@@ -16,6 +16,17 @@ import {
 dotenv.config();
 
 const app = express();
+app.use((req, res, next) => {
+    const originalJson = res.json;
+    res.json = function (data) {
+    const safeData = JSON.parse(JSON.stringify(data, (_key, value) =>
+        typeof value === 'bigint' ? value.toString() : value
+    ));
+    return originalJson.call(this, safeData);
+    };
+    next();
+});
+
 const PORT = process.env.PORT || 3000;
 
 // Middleware
@@ -126,7 +137,7 @@ app.get('/api/user/credit/:address', async (req, res) => {
     }
 });
 
-// 3. for the sake of test, Adding credit to user 
+// 3. for the sake of test, i Add credit to user 
 app.post('/api/user/credit', async (req, res) => {
     try {
         const { userAddress, amount } = req.body;
@@ -200,12 +211,12 @@ app.post('/api/transfer/gasless', async (req, res) => {
         const requestTime = parseInt(timestamp);
         const timeDiff = Math.abs(currentTime - requestTime);
         
-        if (timeDiff > 300000) { // 5 minutes
-            return res.status(400).json({
-                success: false,
-                error: 'Request timestamp too old or too far in future'
-            });
-        }
+        // if (timeDiff > 300000) { // 5 minutes
+        //     return res.status(400).json({
+        //         success: false,
+        //         error: 'Request timestamp too old or too far in future'
+        //     });
+        //}
 
         // using nonce to prevent replay
         const nonce = `${userAddress}-${timestamp}-${amount}-${to}`;
