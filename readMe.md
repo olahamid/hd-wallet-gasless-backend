@@ -5,7 +5,7 @@
 - [Built With](#built-with)
 - [Getting Started](#getting-started)
 - [Architecture](#architecture)
-- [API Documentation](#api-documentation)
+- [API Documentation AND Endpoints](#api-documentation)
 - [Security Features](#security-features)
 - [Testing](#testing)
 - [Deployment](#deployment)
@@ -29,7 +29,7 @@ A HD wallet-backed gasless transaction service for ERC-20 tokens. Users can crea
 - **Node.js** - Runtime environment
 - **Express.js** - Web framework
 - **Ethers.js** - Ethereum interaction
-- **Alchemy/Infura** - Blockchain infrastructure
+- **Alchemy** - Blockchain infrastructure
 - **Sepolia Testnet** - Development network
 - **foundry** - smart contract development
 
@@ -128,20 +128,18 @@ forge script script/RUTO_AI.s.sol --broadcast --rpc-url https://eth-sepolia.g.al
 - **Replay Protection**: Timestamp + nonce validation
 - **Credit System**: Internal balance management
 - **Input Validation**: Comprehensive request sanitization
-## API Documentation
+## API Documentation AND Endpoints
 
 ### Base URL
 ```
 http://localhost:3000/api
 ```
 
-### Endpoints
-
 #### Get Wallet Information
 ```http
-GET /wallet/info
-```
-```curl -X GET http://localhost:3000/api/wallet/info | jq
+  - GET /wallet/info
+  OR 
+  - curl -X GET http://localhost:3000/api/wallet/info | jq
 ```
 
 
@@ -160,28 +158,44 @@ GET /wallet/info
   }
 }
 ```
+**claim credit**
 
-#### Get User Credit
-```http
-GET /user/credit/:address
 ```
-
-#### Add User Credit (Testing)
-```http
-POST /user/credit
-Content-Type: application/json
-
+curl -X POST http://localhost:3000/api/user/credit   -H "Content-Type: application/json"   -d '{"userAddress": "0x8fd379246834eac74B8419FfdA202CF8051F7A03", "amount": "1000"}' | jq
+```
+**Response**
+```
+olahamid04@OlaHamid:~/ruto-gasless-service$ curl -X POST http://localhost:3000/api/user/credit   -H "Content-Type: application/json"   -d '{"userAddress": "0x8fd379246834eac74B8419FfdA202CF8051F7A03", "amount": "1000"}' | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   199  100   120  100    79   5152   3391 --:--:-- --:--:-- --:--:--  8652
 {
-  "userAddress": "0x...",
-  "amount": "1000"
+  "success": true,
+  "data": {
+    "userAddress": "0x8fd379246834eac74B8419FfdA202CF8051F7A03",
+    "previousCredit": 0,
+    "newCredit": 1000
+  }
 }
+olahamid04@OlaHamid:~/ruto-gasless-service$ 
 ```
+
+
 
 #### Gasless Transfer
 ```http
 POST /transfer/gasless
 Content-Type: application/json
 ```
+**OR**
+```
+npm test-gasless
+```
+**OR**
+```
+curl -X POST http://localhost:3000/api/transfer/gasless   -H "Content-Type: application/json"   -d '{"userAddress": "0x8fd379246834eac74B8419FfdA202CF8051F7A03", "to": "0x52102c90aFc51Eb171fa08bB56c892B46bD91177", "amount": "100", "timestamp": 1751883182163, "signature": "0x096af88bf2ae1fe2e7c99affa0edcb32c64343231863d8cdeb7fc4d5d0e515c31b5cae1aeb61c60fb09d28a99c48f4b3e1d88282fcf59ad9f65604cd81ffc2911c"}' | jq
+```
+**PASSED RESPONSE**
 
 ```
 {
@@ -208,24 +222,53 @@ Content-Type: application/json
 }
 ```
 
+#### Get User Credit
+```
+curl -X GET http://localhost:3000/api/user/credit/{ox....useraddr} | jq
+```
+```
+curl -X GET http://localhost:3000/api/user/credit/0x8fd379246834eac74B8419FfdA202CF8051F7A03 | jq
+```
+
 **Success Response:**
 ```json
+olahamid04@OlaHamid:~/ruto-gasless-service$ curl -X GET http://localhost:3000/api/user/credit/0x8fd379246834eac74B8419FfdA202CF8051F7A03 | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    93  100    93    0     0  22594      0 --:--:-- --:--:-- --:--:-- 23250
 {
   "success": true,
   "data": {
-    "transactionHash": "0x...",
-    "gasUsed": "65000",
-    "gasPaidBy": "0x...",
-    "authorizedBy": "0x...",
-    "isGasless": true
+    "address": "0x8fd379246834eac74B8419FfdA202CF8051F7A03",
+    "credit": "0"
   }
+
 }
 ```
 
-### Message Signing Format
-```javascript
-const message = `Transfer ${amount} tokens from ${userAddress} to ${to} at ${timestamp}`;
-const signature = await wallet.signMessage(message);
+### GET HEALTH CHECK
+```
+curl -X GET http://localhost:3000/api/health | jq
+```
+**PASSED RESPONCE**
+
+```
+olahamid04@OlaHamid:~/ruto-gasless-service$ curl -X GET http://localhost:3000/api/health | jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   206  100   206    0     0  99613      0 --:--:-- --:--:-- --:--:--  100k
+{
+  "success": true,
+  "data": {
+    "status": "healthy",
+    "managedAddress": "0xecd514994Dc2DA214CFf747885BE2e177f97172e",
+    "totalUsers": 0,
+    "totalTransactions": 0,
+    "isGaslessService": true,
+    "timestamp": "2025-07-07T17:55:10.066Z"
+  }
+}
+olahamid04@OlaHamid:~/ruto-gasless-service$ 
 ```
 
 ## Security Features
@@ -239,7 +282,9 @@ const signature = await wallet.signMessage(message);
 - **Timestamp Validation**: 5-minute window for requests (BLOCK.TIMESTAMP LIMIT)
 - **Nonce System**: Unique transaction identifiers
 - **Used Signature Tracking**: Prevents duplicate transactions
-
+ ### 3. Credit System
+- **Internal Balances:** Off-chain credit tracking, allow centralised accounting instead of calling mappings data from contract
+- **Overdraft Protection:** Prevents negative balances.
 
 ## Testing
 
@@ -253,12 +298,13 @@ npm run test-gasless
 npm run generate-signature
 ```
 
-### Manual Testing
+**Contract Testing**
 ```bash
 # Test contract functions
 npm run testContract
-
-# Test wallet loading
+```
+**Wallet Testing**
+```
 npm run test-load-wallet
 ```
 
@@ -271,7 +317,6 @@ CUSTOM_PHRASE=your_hd_wallet_seed
 PORT=3000
 ```
 
-```
 
 ## Project Structure
 ```
@@ -310,12 +355,13 @@ src/
 ```
 
 
-### Development Guidelines
+### Development Guidelines 
 - Follow REST API conventions
 - Add comprehensive tests
+- add more better unit and integration tests to the REPO
 - Update documentation
-- Maintain security standards
-- Add ERC2771(Meta Tx) OR ERC4773(AA)
+- do manual reviews/audits 
+- Add ERC2771(Meta Tx) OR ERC4773(AA) to allow decentralised methodology of gasless implementation
 
 ## Contributing
 1. Fork the Project
